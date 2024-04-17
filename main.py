@@ -2,12 +2,20 @@ import subprocess
 import pygame
 import time
 import socket
+import logging
+
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 # Function to ping the specified IP address or hostname
 def ping(target):
     response = subprocess.run(['ping', '-c', '1', target], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return response.returncode == 0
+    success = response.returncode == 0
+    logger.debug(f"Ping to {target} {'succeeded' if success else 'failed'}")
+    return success
 
 
 # Function to blank the screen
@@ -29,7 +37,7 @@ def resolve_hostname(hostname):
         ip_address = socket.gethostbyname(hostname)
         return ip_address
     except socket.gaierror:
-        print("Error: Unable to resolve hostname.")
+        logger.error("Unable to resolve hostname.")
         return None
 
 
@@ -41,7 +49,7 @@ def main(target):
             unblank_screen()
         else:
             blank_screen()
-        time.sleep(5)  # Wait for 5 seconds before next ping
+        time.sleep(1)  # Wait for 1 second before next ping
 
 
 # Main program
@@ -63,4 +71,4 @@ if __name__ == "__main__":
     if ip_address:
         main(ip_address)
     else:
-        print("Invalid IP address or hostname.")
+        logger.error("Invalid IP address or hostname.")
