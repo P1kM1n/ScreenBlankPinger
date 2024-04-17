@@ -3,6 +3,7 @@ import pygame
 import time
 import socket
 import logging
+import os
 
 
 # Configure logging
@@ -12,8 +13,9 @@ logger = logging.getLogger(__name__)
 
 # Function to ping the specified IP address or hostname
 def ping(target):
-    response = subprocess.run(['ping', '-c', '1', target], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    success = response.returncode == 0
+    command = f"ping -n 1 {target}"
+    response = os.system(command)
+    success = response == 0
     logger.debug(f"Ping to {target} {'succeeded' if success else 'failed'}")
     return success
 
