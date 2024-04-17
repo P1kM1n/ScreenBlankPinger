@@ -85,6 +85,6 @@ def main(target):
 # Main program
 if __name__ == "__main__":
     # Input IP address or hostname
-    target = "192.168.0.1"
+    target = "cookiscomputer"
 
     main(target)
