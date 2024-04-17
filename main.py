@@ -1,10 +1,10 @@
+import subprocess
 import pygame
 import time
 import socket
 import logging
-import subprocess
 import os
-from pygame.locals import *
+
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -13,13 +13,11 @@ logger = logging.getLogger(__name__)
 
 # Function to ping the specified IP address or hostname
 def ping(target):
-    try:
-        subprocess.run(['ping', '-c', '1', target], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        logger.debug(f"Ping to {target} succeeded")
-        return True
-    except subprocess.CalledProcessError:
-        logger.debug(f"Ping to {target} failed")
-        return False
+    command = f"ping -n 1 {target}"
+    response = os.system(command)
+    success = response == 0
+    logger.debug(f"Ping to {target} {'succeeded' if success else 'failed'}")
+    return success
 
 
 # Function to blank the screen
@@ -28,7 +26,6 @@ def blank_screen():
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     screen.fill((0, 0, 0))
     pygame.display.flip()
-    return screen
 
 
 # Function to unblank the screen
@@ -49,34 +46,6 @@ def resolve_hostname(hostname):
 # Main function
 def main(target):
     # Main loop
-    screen = blank_screen()
-    click_count = 0
-    while True:
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN and event.button == 1:
-                click_count += 1
-                if click_count == 3:
-                    pygame.quit()
-                    return
-            elif event.type == QUIT:
-                pygame.quit()
-                return
-
-        if ping(target):  # Ensure target is passed as a string
-            unblank_screen()
-        else:
-            screen = blank_screen()
-            click_count = 0
-
-        time.sleep(1)  # Wait for 1 second before next ping
-
-
-
-# Main function
-def main(target):
-    # Main loop
-
-
     while True:
         if ping(target):
             unblank_screen()
@@ -88,6 +57,6 @@ def main(target):
 # Main program
 if __name__ == "__main__":
     # Input IP address or hostname
-    target = "192.168.0.1"
+    target = "raspberrypi"
 
     main(target)
