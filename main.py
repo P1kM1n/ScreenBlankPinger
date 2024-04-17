@@ -72,3 +72,4 @@ if __name__ == "__main__":
         main(ip_address)
     else:
         logger.error("Invalid IP address or hostname.")
+
