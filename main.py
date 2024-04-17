@@ -57,21 +57,6 @@ def main(target):
 # Main program
 if __name__ == "__main__":
     # Input IP address or hostname
-    target = input("Enter IP address or hostname to ping: ")
+    target = "raspberrypi"
 
-    # Check if the input is an IP address or hostname
-    try:
-        ip_address = socket.inet_aton(target)
-    except socket.error:
-        ip_address = None
-
-    # If the input is a hostname, resolve it to an IP address
-    if ip_address is None:
-        ip_address = resolve_hostname(target)
-
-    # If IP address is resolved, start the main program
-    if ip_address:
-        main(ip_address)
-    else:
-        logger.error("Invalid IP address or hostname.")
-
+    main(target)
