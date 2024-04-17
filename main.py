@@ -23,7 +23,7 @@ def unblank_screen():
 
 
 # IP address to ping
-ip_address = "192.168.0.65"  # Change this to the IP address you want to ping
+ip_address = "TOBIASLAPTOP"  # Change this to the IP address you want to ping
 
 # Main loop
 while True:
